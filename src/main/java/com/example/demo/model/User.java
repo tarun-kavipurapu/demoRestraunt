@@ -19,8 +19,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("users")
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Data
 public class User {
+
+
+
+@NotNull
+
     private String fullname;
 
 @NotNull
@@ -29,26 +34,7 @@ public class User {
     private String username;
 @NotNull
     private String password;
-@NotNull
-    private String refreshToken;
-    public enum Role {
-        ROLE_ADMIN, ROLE_USER
-    }
     private Role role;
 
 
-    public String getFullname() {
-        return fullname;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-    public Role getRole() {
-        return role;
-    }
 }
