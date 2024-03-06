@@ -13,7 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * String fullname-->not null,
  * String username-->unique-->notnulll
  * String password-->not null
- * String refreshToken
  * enum role
  */
 @Document("users")
