@@ -38,7 +38,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<Object> signup(@RequestBody UserDto userDto) {
-        System.out.println(userDto);
+        //Write validators here
         try {
             Boolean isSignedUp = userDetailsServiceImpl.signupUser(userDto);
             if (Boolean.FALSE.equals(isSignedUp)) {
@@ -57,6 +57,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody AuthRequestDto authRequestDto) {
+        //Write validators here
+        //here the relation between refreshtokenTable and User entity was assumed to be one-many so that user can have many sessions else we can delete the present token after loging in
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequestDto.getUsername(), authRequestDto.getPassword()));

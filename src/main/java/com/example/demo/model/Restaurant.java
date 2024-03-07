@@ -10,11 +10,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * User Model
  * */
-@Document(collection ="restraunts")
+@Document(collection ="restaurant")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Restraunt {
+public class Restaurant {
     @Id
     private String id;
     private String restaurantName;
@@ -28,14 +28,11 @@ public class Restraunt {
     private String email;
     private String website;
 
-    public Restraunt(String restaurantName, String cuisine, Integer rating, String address, String city, String state, String zipCode, String phoneNumber, String email, String website) {
+    public Restaurant(String restaurantName, String cuisine, Integer rating, String address,  String phoneNumber, String email, String website) {
         this.restaurantName = restaurantName;
         this.cuisine = cuisine;
         this.rating = rating;
         this.address = address;
-        this.city = city;
-        this.state = state;
-        this.zipCode = zipCode;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.website = website;

@@ -1,10 +1,10 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.Restraunt;
+import com.example.demo.model.Restaurant;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepo extends MongoRepository<Restraunt,Integer> {
+public interface RestaurantRepo extends MongoRepository<Restaurant,String> {
 
 }
