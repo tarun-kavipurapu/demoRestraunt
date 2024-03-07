@@ -20,10 +20,7 @@ public class RefreshTokenService {
     @Autowired
     UserRepo userRepo;
 
-    /*
-     * createRefreshtoken
-     *
-     * */
+
     public RefreshToken createRefreshToken(String username) {
         User userInfoExtracted = userRepo.findByUsername(username);
         RefreshToken refreshToken = RefreshToken

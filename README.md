@@ -1,6 +1,10 @@
 
 # Getting Started
 
+### Authentication Diagram
+![img.png](public/img.png)
+
+
 ### Reference Documentation
 For further reference, please consider the following sections:
 

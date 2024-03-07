@@ -24,7 +24,6 @@ import com.example.demo.auth.JwtAuthFilter;
 @Configuration
 @EnableMethodSecurity
 @Data
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Autowired

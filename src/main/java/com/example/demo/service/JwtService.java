@@ -16,17 +16,6 @@ import java.util.Map;
 import java.security.Key;
 import java.util.function.Function;
 
-/*
-* generateToken(username)
-*
-* extractUsername(string Token)
-* extractExpirationDate()
-* boolean isTokenValid(String token,UserDetails userDetails)
-*
-*
-*
-* */
-
 
 
 @Service

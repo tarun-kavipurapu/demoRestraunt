@@ -31,10 +31,7 @@ public class AuthController {
     @Autowired
     private final AuthenticationManager authenticationManager;
 
-    @PostMapping("/test")
-    public String handleRequest() {
-        return "hello world";
-    }
+
 
     @PostMapping("/signup")
     public ResponseEntity<Object> signup(@RequestBody UserDto userDto) {
