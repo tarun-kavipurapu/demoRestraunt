@@ -18,7 +18,7 @@
 
 
         public CustomUserDetails(User newUser){
-            this.username = newUser.getPassword();
+            this.username = newUser.getUsername();
             this.password = newUser.getPassword();
             List<GrantedAuthority> auths = new ArrayList<>();
             auths.add(new SimpleGrantedAuthority(newUser.getRole().name()));
