@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Product;
+import com.example.demo.model.Restraunt;
 import com.example.demo.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Component
 @Service
-public class ProductService {
+public class RestrauntService {
     @Autowired
     private ProductRepo productrepo;
-        public List<Product> getProducts() {
+        public List<Restraunt> getProducts() {
         return productrepo.findAll();
     }
 
-    public Product addProduct(Product product){
-        return productrepo.save(product);
+    public Restraunt addProduct(Restraunt restraunt){
+        return productrepo.save(restraunt);
     }
 }

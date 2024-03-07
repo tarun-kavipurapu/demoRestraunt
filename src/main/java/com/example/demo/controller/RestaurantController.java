@@ -1,9 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Product;
-import com.example.demo.service.ProductService;
+import com.example.demo.model.Restaurant;
+import com.example.demo.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,14 +11,14 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    private RestaurantService productService;
     @GetMapping("/all")
-    public List<Product> getProducts() {
+    public List<Restaurant> getProducts() {
         return productService.getProducts();
     }
     @PostMapping("/insert")
-    public Product insert(@RequestBody Product product){
-        return  productService.addProduct(product);
+    public Restaurant insert(@RequestBody Restaurant restaurant){
+        return  productService.addProduct(restaurant);
     }
     @GetMapping("/endpoint")
     public String handleRequest() {
