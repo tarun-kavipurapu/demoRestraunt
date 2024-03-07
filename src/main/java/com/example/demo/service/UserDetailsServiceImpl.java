@@ -10,10 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
-
+@Component
 @Service
 @AllArgsConstructor
 @Data
@@ -52,7 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(Objects.nonNull(checkIfUserExists(userDto))){
             return false;
         }
-        userRepo.save(new User(userDto.getUsername(), userDto.getFullname(), userDto.getPassword(),userDto.getRole()));
+        userRepo.save(new User(userDto.getFullname(), userDto.getUsername(), userDto.getPassword(),userDto.getRole()));
 
         return true;
     }

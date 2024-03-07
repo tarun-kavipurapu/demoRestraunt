@@ -16,68 +16,74 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/auth")
 @AllArgsConstructor
 public class AuthController {
     @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
     @Autowired
-    private RefreshTokenService refreshTokenService;
+    private final RefreshTokenService refreshTokenService;
     @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @PostMapping("auth/v1/signup")
-    public ResponseEntity signup(@RequestBody UserDto userDto){
-        try{
-            Boolean isSignUped = userDetailsServiceImpl.signupUser(userDto);
-            if(Boolean.FALSE.equals(isSignUped)){
-                return new ResponseEntity<>("Already Exists ",HttpStatus.BAD_REQUEST);
+    @PostMapping("/test")
+    public String handleRequest() {
+        return "hello world";
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<Object> signup(@RequestBody UserDto userDto) {
+        System.out.println(userDto);
+        try {
+            Boolean isSignedUp = userDetailsServiceImpl.signupUser(userDto);
+            if (Boolean.FALSE.equals(isSignedUp)) {
+                return new ResponseEntity<>("Already Exists ", HttpStatus.BAD_REQUEST);
             }
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDto.getUsername());
             String jwtToken = jwtService.generateToken(userDto.getUsername());
-            return new ResponseEntity<>(JwtResponseDto.builder().accessToken(jwtToken).
-                                                      token(refreshToken.getToken()).build(), HttpStatus.OK);
-        }
-        catch (Exception ex){
-            return  new ResponseEntity<>("Exception in User Services Implementation", HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.ok(JwtResponseDto.builder()
+                                                   .accessToken(jwtToken)
+                                                   .token(refreshToken.getToken())
+                                                   .build());
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PostMapping("auth/v1/login")
-    public ResponseEntity login (@RequestBody AuthRequestDto authRequestDto){
-        try{
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDto.getUsername(),authRequestDto.getPassword()));
-            if(authentication.isAuthenticated()){
-                RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequestDto.getUsername());
-                return new ResponseEntity<>(JwtResponseDto.builder()
-                                                          .accessToken(jwtService.generateToken(authRequestDto.getUsername()))
-                                                          .token(refreshToken.getToken())
-                                                          .build(), HttpStatus.OK);
-            }
-            else{
-                return new ResponseEntity<>("User not Auuthentication ", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
 
-        }
-        catch (Exception ex){
-            return new ResponseEntity<>("Exception while logging in ",HttpStatus.INTERNAL_SERVER_ERROR);
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody AuthRequestDto authRequestDto) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authRequestDto.getUsername(), authRequestDto.getPassword()));
+            if (authentication.isAuthenticated()) {
+                RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequestDto.getUsername());
+                return ResponseEntity.ok(JwtResponseDto.builder()
+                                                       .accessToken(jwtService.generateToken(authRequestDto.getUsername()))
+                                                       .token(refreshToken.getToken())
+                                                       .build());
+            } else {
+                return new ResponseEntity<>("User not authenticated", HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>("Exception while logging in", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public JwtResponseDto refreshToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto){
+
+    @PostMapping("/refreshToken")
+    public ResponseEntity<JwtResponseDto> refreshToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
         return refreshTokenService.findByToken(refreshTokenRequestDto.getToken())
                                   .map(refreshTokenService::verifyExpiration)
                                   .map(RefreshToken::getUserId)
-                                  .map(userId -> {
-                                      String accessToken = jwtService.generateToken(userId.getUsername());
-                                      return JwtResponseDto.builder()
-                                                           .accessToken(accessToken)
-                                                           .token(refreshTokenRequestDto.getToken()).build();
-                                  }).orElseThrow(() ->new RuntimeException("Refresh Token is not in DB..!!"));
+                                  .map(userId -> JwtResponseDto.builder()
+                                                               .accessToken(jwtService.generateToken(userId.getUsername()))
+                                                               .token(refreshTokenRequestDto.getToken())
+                                                               .build())
+                                  .map(ResponseEntity::ok)
+                                  .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
-
 }

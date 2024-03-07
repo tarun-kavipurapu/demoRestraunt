@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -23,6 +24,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @AllArgsConstructor
 @Data
 public class User {
+    @Id
+    private String Id;
 @NotBlank
     private String fullname;
 
@@ -38,5 +41,10 @@ public class User {
 @NotBlank
     private Role role;
 
-
+    public User(String fullname, String username, String password,Role role) {
+        this.fullname = fullname;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 }
